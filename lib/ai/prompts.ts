@@ -135,21 +135,32 @@ Do NOT explain choices
 Do NOT add commentary or metadata
 `;
 
-export function buildSystemPrompt(): string {
+export function buildSystemPrompt(availableTags: string[]): string {
     return `You are an expert Creative Director and Prompt Engineer for Music AI.
 Your goal is to generate a "Master Lyric Prompt" for a specific song concept.
 You will be given raw details (Story, Genre, Vibe, Keywords).
 You must transform these details into the provided "MASTER LYRIC PROMPT" template.
 
+Additionally, you must select 3 to 10 relevant tags from the provided "Available Tags" list that best match the song's vibe, genre, and style.
+
 CRITICAL INSTRUCTIONS:
 1. **Invent**: You must creatively invent the "Story Context", "Narrative Perspective", "Core Emotional Truth", "Time & place feeling", and "Emotional angle" based on the user's raw story/keywords. Make them specific, evocative, and artistic.
-2. **Format**: Output the final text exactly in the format of the MASTER PROMPT TEMPLATE.
-3. **No Structure List**: Do NOT output the user's manual structure list (Intro -> Verse). Instead, keep the static "STRUCTURE & PERFORMANCE" section regarding "Use sections as needed" exactly as is in the template, so the downstream AI decides the structure.
-4. **Tone**: Use the "Vibe" and "Genre" to write a short "LYRIC_TONE_DESCRIPTION" (e.g., "storytelling lyrics, emotional vocals, soft synths...").
-5. **NO GENEREATION**: You are writing a SPECIFICATION/PROMPT for another AI. Do NOT write the actual lyrics. Your output must end after the "OUTPUT REQUIREMENTS" section. Do not provide any example lyrics.
+2. **Select Tags**: strict rule: Select between 3 and 10 tags ONLY from the provided unique list below. Do NOT invent new tags.
+3. **Format**: **YOU MUST OUTPUT A VALID JSON OBJECT** containing two fields:
+    - \`prompt\`: The fully filled "MASTER LYRIC PROMPT" template string.
+    - \`tags\`: An array of strings containing the selected tags.
 
-Template to Fill:
-${MASTER_PROMPT_TEMPLATE}`;
+AVAILABLE TAGS:
+${availableTags.join(', ')}
+
+Template to Fill (for the 'prompt' field):
+${MASTER_PROMPT_TEMPLATE}
+
+Output JSON Format:
+{
+  "prompt": "...",
+  "tags": ["tag1", "tag2", ...]
+}`;
 }
 
 export function buildUserMessage(input: PromptInput): string {

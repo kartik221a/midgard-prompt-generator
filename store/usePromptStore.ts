@@ -4,6 +4,7 @@ import { PromptInput, SongMetadata, Musicality, Structure } from '@/lib/ai/promp
 interface PromptState {
     input: PromptInput;
     generatedPrompt: string;
+    generatedTags: string[];
     isGenerating: boolean;
 
     // Actions
@@ -12,6 +13,7 @@ interface PromptState {
     setStructure: (structure: Partial<Structure>) => void;
     setTargetPlatform: (platform: string) => void;
     setGeneratedPrompt: (prompt: string) => void;
+    setGeneratedTags: (tags: string[]) => void;
     setIsGenerating: (isGenerating: boolean) => void;
     reset: () => void;
 }
@@ -40,6 +42,7 @@ const defaultInput: PromptInput = {
 export const usePromptStore = create<PromptState>((set) => ({
     input: defaultInput,
     generatedPrompt: '',
+    generatedTags: [],
     isGenerating: false,
 
     setMetadata: (metadata) => set((state) => ({
@@ -55,6 +58,7 @@ export const usePromptStore = create<PromptState>((set) => ({
         input: { ...state.input, targetPlatform: platform }
     })),
     setGeneratedPrompt: (prompt) => set({ generatedPrompt: prompt }),
+    setGeneratedTags: (tags) => set({ generatedTags: tags }),
     setIsGenerating: (isGenerating) => set({ isGenerating }),
-    reset: () => set({ input: defaultInput, generatedPrompt: '' }),
+    reset: () => set({ input: defaultInput, generatedPrompt: '', generatedTags: [] }),
 }));

@@ -13,7 +13,7 @@ import { db } from '@/lib/firebase/config';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 export function GeneratedResult() {
-    const { input, generatedPrompt, isGenerating, setGeneratedPrompt, setIsGenerating } = usePromptStore();
+    const { input, generatedPrompt, generatedTags, isGenerating, setGeneratedPrompt, setGeneratedTags, setIsGenerating } = usePromptStore();
     const { user } = useAuth();
     const [copied, setCopied] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
@@ -26,6 +26,7 @@ export function GeneratedResult() {
                 toast.error('Generation Failed', { description: result.error });
             } else {
                 setGeneratedPrompt(result.prompt);
+                setGeneratedTags(result.tags || []);
                 toast.success('Prompt Generated!');
             }
         } catch (e) {
@@ -49,6 +50,7 @@ export function GeneratedResult() {
                 userId: user.uid, // Add User ID
                 userEmail: user.email, // Optional: helpful for admin debugging
                 prompt: generatedPrompt,
+                tags: generatedTags,
                 metadata: input.metadata,
                 musicality: input.musicality,
                 structure: input.structure,
@@ -99,12 +101,22 @@ export function GeneratedResult() {
                             </button>
                         </div>
                     </CardHeader>
-                    <CardContent>
+                    <CardContent className="space-y-4">
                         <AnimatedTextarea
                             readOnly
                             value={generatedPrompt}
                             className="min-h-[300px] font-mono text-sm border-0 focus-visible:ring-0 resize-y text-gray-300"
                         />
+
+                        {generatedTags.length > 0 && (
+                            <div className="flex flex-wrap gap-2 pt-2 border-t border-white/10">
+                                {generatedTags.map((tag) => (
+                                    <span key={tag} className="px-2 py-1 rounded-md bg-white/5 border border-white/10 text-xs text-gray-400">
+                                        #{tag}
+                                    </span>
+                                ))}
+                            </div>
+                        )}
                     </CardContent>
                     <CardFooter className="text-xs text-gray-500 pt-0">
                         Ready to paste into Suno, Udio, or ChatGPT.
