@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 
 interface BlurTextProps {
     text: string;
@@ -11,15 +11,15 @@ interface BlurTextProps {
 export default function BlurText({ text, className = "", delay = 0 }: BlurTextProps) {
     const words = text.split(' ');
 
-    const container = {
+    const container: Variants = {
         hidden: { opacity: 0 },
-        visible: (i = 1) => ({
+        visible: (i: number = 1) => ({
             opacity: 1,
             transition: { staggerChildren: 0.12, delayChildren: 0.04 * i + delay },
         }),
     };
 
-    const child = {
+    const child: Variants = {
         visible: {
             opacity: 1,
             y: 0,
