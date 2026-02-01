@@ -39,8 +39,21 @@ service cloud.firestore {
       // Users can create prompts
       allow create: if isSignedIn();
       
-      // Users can delete their own prompts
+    // Users can delete their own prompts
       allow delete: if isSignedIn(); // Add ownership check: resource.data.userId == request.auth.uid;
+    }
+
+    // Coloring Books Collection
+    match /coloringBooks/{bookId} {
+      // Users can read their own books
+      // For list queries, this requires the query to filter by userId
+      allow read: if isSignedIn() && resource.data.userId == request.auth.uid;
+      
+      // Users can create books if they mark themselves as the owner
+      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
+      
+      // Users can delete their own books
+      allow delete: if isSignedIn() && resource.data.userId == request.auth.uid;
     }
   }
 }

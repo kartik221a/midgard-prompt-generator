@@ -1,6 +1,6 @@
 'use client';
 
-import { usePromptStore } from '@/store/usePromptStore';
+import { useLyricsStore } from '@/lib/tools/lyrics/store';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -13,7 +13,7 @@ const TARGET_PLATFORMS = ['Generic', 'Suno', 'Udio', 'ChatGPT', 'Claude', 'Gemin
 const LANGUAGES = ['English', 'Spanish', 'French', 'German', 'Japanese', 'Korean', 'Italian', 'Portuguese'];
 
 export function ExtraFeaturesForm() {
-    const { input, setMusicality, setTargetPlatform, input: { musicality } } = usePromptStore();
+    const { input, setMusicality, setTargetPlatform, input: { musicality } } = useLyricsStore();
     const [instrumentInput, setInstrumentInput] = useState('');
 
     const handleAddInstrument = (e: React.KeyboardEvent) => {
@@ -83,7 +83,7 @@ export function ExtraFeaturesForm() {
                         <Label className="text-primary font-semibold tracking-wide">Language</Label>
                         <Select
                             value={input.language}
-                            onValueChange={(v) => usePromptStore.setState(s => ({ input: { ...s.input, language: v } }))}
+                            onValueChange={(v) => useLyricsStore.setState(s => ({ input: { ...s.input, language: v } }))}
                         >
                             <SelectTrigger className="bg-zinc-900/80 border-none text-white shadow-input">
                                 <SelectValue placeholder="English" />

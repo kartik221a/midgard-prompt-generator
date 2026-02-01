@@ -1,9 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { LayoutGrid, Music2, LogIn, LogOut, User as UserIcon, Shield, Home } from 'lucide-react';
+import { LogIn, LogOut, User as UserIcon, Shield, Home, Wrench, Music2, LayoutGrid, Palette } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import {
     DropdownMenu,
@@ -12,77 +12,133 @@ import {
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
+    DropdownMenuSub,
+    DropdownMenuSubContent,
+    DropdownMenuSubTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 export function Navbar() {
     const pathname = usePathname();
-    const router = useRouter();
     const { user, userData, signInWithGoogle, logout } = useAuth();
+
+    const isToolActive = pathname.startsWith('/tools/');
+    const isLyricsActive = pathname.startsWith('/tools/lyrics/');
+    const isColoringBookActive = pathname.startsWith('/tools/coloring-book/');
 
     return (
         <nav className="fixed top-0 left-0 right-0 z-50 flex justify-center py-4 pointer-events-none">
             <div className="flex items-center gap-4 p-2 rounded-full bg-black/40 backdrop-blur-xl border border-white/10 shadow-2xl pointer-events-auto">
                 {/* Navigation Items */}
                 <div className="flex items-center gap-1">
+                    {/* Home Link - Always visible for logged-in users */}
                     {user && (
-                        <>
-                            <Link
-                                href="/"
-                                className={cn(
-                                    "flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300",
-                                    pathname === '/'
-                                        ? "bg-primary/20 text-primary border border-primary/30 shadow-[0_0_15px_-5px_hsl(var(--primary))]"
-                                        : "text-gray-400 hover:text-white hover:bg-white/5"
-                                )}
-                            >
-                                <Home className="w-4 h-4" />
-                                <span className="hidden sm:inline">Home</span>
-                            </Link>
-                            <Link
-                                href="/studio"
-                                className={cn(
-                                    "flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300",
-                                    pathname === '/studio'
-                                        ? "bg-primary/20 text-primary border border-primary/30 shadow-[0_0_15px_-5px_hsl(var(--primary))]"
-                                        : "text-gray-400 hover:text-white hover:bg-white/5"
-                                )}
-                            >
-                                <Music2 className="w-4 h-4" />
-                                <span className="hidden sm:inline">Studio</span>
-                            </Link>
+                        <Link
+                            href="/"
+                            className={cn(
+                                "flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300",
+                                pathname === '/'
+                                    ? "bg-primary/20 text-primary border border-primary/30 shadow-[0_0_15px_-5px_hsl(var(--primary))]"
+                                    : "text-gray-400 hover:text-white hover:bg-white/5"
+                            )}
+                        >
+                            <Home className="w-4 h-4" />
+                            <span className="hidden sm:inline">Home</span>
+                        </Link>
+                    )}
 
-                            <Link
-                                href="/library"
-                                className={cn(
-                                    "flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300",
-                                    pathname === '/library'
-                                        ? "bg-primary/20 text-primary border border-primary/30 shadow-[0_0_15px_-5px_hsl(var(--primary))]"
-                                        : "text-gray-400 hover:text-white hover:bg-white/5"
-                                )}
-                            >
-                                <LayoutGrid className="w-4 h-4" />
-                                <span className="hidden sm:inline">Library</span>
-                            </Link>
-
-                            {userData?.role === 'admin' && (
-                                <Link
-                                    href="/admin"
+                    {/* Tools Dropdown - Only for logged-in users */}
+                    {user && (
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <button
                                     className={cn(
                                         "flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300",
-                                        pathname === '/admin'
+                                        isToolActive
                                             ? "bg-primary/20 text-primary border border-primary/30 shadow-[0_0_15px_-5px_hsl(var(--primary))]"
                                             : "text-gray-400 hover:text-white hover:bg-white/5"
                                     )}
                                 >
-                                    <Shield className="w-4 h-4" />
-                                    <span className="hidden sm:inline">Admin</span>
-                                </Link>
-                            )}
-                        </>
+                                    <Wrench className="w-4 h-4" />
+                                    <span className="hidden sm:inline">Tools</span>
+                                    <svg
+                                        className="w-3 h-3 ml-1"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent className="w-56" align="start">
+                                {/* Lyrics Generator */}
+                                <DropdownMenuSub>
+                                    <DropdownMenuSubTrigger>
+                                        <Music2 className="mr-2 h-4 w-4" />
+                                        <span>Lyrics Generator</span>
+                                    </DropdownMenuSubTrigger>
+                                    <DropdownMenuSubContent>
+                                        <DropdownMenuItem asChild>
+                                            <Link href="/tools/lyrics/studio" className="w-full cursor-pointer">
+                                                <Music2 className="mr-2 h-4 w-4" />
+                                                Studio
+                                            </Link>
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem asChild>
+                                            <Link href="/tools/lyrics/library" className="w-full cursor-pointer">
+                                                <LayoutGrid className="mr-2 h-4 w-4" />
+                                                Library
+                                            </Link>
+                                        </DropdownMenuItem>
+                                    </DropdownMenuSubContent>
+                                </DropdownMenuSub>
+
+                                <DropdownMenuSeparator />
+
+                                {/* Coloring Book Generator */}
+                                <DropdownMenuSub>
+                                    <DropdownMenuSubTrigger>
+                                        <Palette className="mr-2 h-4 w-4" />
+                                        <span>Coloring Book Generator</span>
+                                    </DropdownMenuSubTrigger>
+                                    <DropdownMenuSubContent>
+                                        <DropdownMenuItem asChild>
+                                            <Link href="/tools/coloring-book/studio" className="w-full cursor-pointer">
+                                                <Palette className="mr-2 h-4 w-4" />
+                                                Studio
+                                            </Link>
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem asChild>
+                                            <Link href="/tools/coloring-book/library" className="w-full cursor-pointer">
+                                                <LayoutGrid className="mr-2 h-4 w-4" />
+                                                Library
+                                            </Link>
+                                        </DropdownMenuItem>
+                                    </DropdownMenuSubContent>
+                                </DropdownMenuSub>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
                     )}
 
+                    {/* Admin Link */}
+                    {user && userData?.role === 'admin' && (
+                        <Link
+                            href="/admin"
+                            className={cn(
+                                "flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300",
+                                pathname === '/admin'
+                                    ? "bg-primary/20 text-primary border border-primary/30 shadow-[0_0_15px_-5px_hsl(var(--primary))]"
+                                    : "text-gray-400 hover:text-white hover:bg-white/5"
+                            )}
+                        >
+                            <Shield className="w-4 h-4" />
+                            <span className="hidden sm:inline">Admin</span>
+                        </Link>
+                    )}
+
+                    {/* Home Link for non-logged-in users */}
                     {!user && (
                         <Link
                             href="/"

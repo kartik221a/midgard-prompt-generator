@@ -1,6 +1,6 @@
 'use client';
 
-import { usePromptStore } from '@/store/usePromptStore';
+import { useLyricsStore } from '@/lib/tools/lyrics/store';
 import { AnimatedInput } from '@/components/reactbits/AnimatedInput';
 import { AnimatedTextarea } from '@/components/reactbits/AnimatedTextarea';
 import { Label } from '@/components/ui/label';
@@ -10,7 +10,7 @@ import { X } from 'lucide-react';
 import { useState } from 'react';
 
 export function SongMetadataForm() {
-    const { input, setMetadata } = usePromptStore();
+    const { input, setMetadata } = useLyricsStore();
     const [keywordInput, setKeywordInput] = useState('');
 
     const handleAddKeyword = (e: React.KeyboardEvent) => {

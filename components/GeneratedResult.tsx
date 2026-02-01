@@ -1,19 +1,19 @@
 'use client';
 
-import { usePromptStore } from '@/store/usePromptStore';
+import { useLyricsStore } from '@/lib/tools/lyrics/store';
 import { useAuth } from '@/context/AuthContext';
 import CyberButton from '@/components/reactbits/CyberButton';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { AnimatedTextarea } from '@/components/reactbits/AnimatedTextarea';
 import { Copy, Check, Sparkles, Save } from 'lucide-react';
 import { useState } from 'react';
-import { generateLyricPromptAction } from '@/app/actions/generate';
+import { generateLyricPromptAction } from '@/app/actions/lyrics';
 import { toast } from 'sonner';
 import { db } from '@/lib/firebase/config';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 export function GeneratedResult() {
-    const { input, generatedPrompt, generatedTags, isGenerating, setGeneratedPrompt, setGeneratedTags, setIsGenerating } = usePromptStore();
+    const { input, generatedPrompt, generatedTags, isGenerating, setGeneratedPrompt, setGeneratedTags, setIsGenerating } = useLyricsStore();
     const { user } = useAuth();
     const [copied, setCopied] = useState(false);
     const [isSaving, setIsSaving] = useState(false);

@@ -1,6 +1,6 @@
 'use client';
 
-import { usePromptStore } from '@/store/usePromptStore';
+import { useLyricsStore } from '@/lib/tools/lyrics/store';
 import { Slider } from '@/components/ui/slider';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -18,7 +18,7 @@ const VIBES = ['Energetic', 'Melancholic', 'Chill', 'Aggressive', 'Romantic', 'D
 const VOCAL_STYLES = ['Male', 'Female', 'Duet', 'Choir', 'Robot/Synth', 'None (Instrumental)'];
 
 export function MusicalityForm() {
-    const { input, setMusicality } = usePromptStore();
+    const { input, setMusicality } = useLyricsStore();
     const { musicality } = input;
     const [isSuggesting, setIsSuggesting] = useState(false);
 

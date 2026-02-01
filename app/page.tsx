@@ -35,7 +35,7 @@ export default function LandingPage() {
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-300">
-          <Link href="/studio">
+          <Link href="/tools/lyrics/studio">
             <CyberButton className="h-12 px-8 text-base">
               Start Creating <ArrowRight className="w-4 h-4 ml-2" />
             </CyberButton>
