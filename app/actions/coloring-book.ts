@@ -23,10 +23,10 @@ export async function generateColoringBookPromptsAction(
             };
         }
 
-        if (input.pageCount < 1 || input.pageCount > 50) {
+        if (input.pageCount < 1 || input.pageCount > 100) {
             return {
                 prompts: [],
-                error: 'Page count must be between 1 and 50'
+                error: 'Page count must be between 1 and 100'
             };
         }
 
