@@ -112,7 +112,7 @@ export const useColoringBookStore = create<ColoringBookState>((set) => ({
     })),
 
     setPageCount: (count) => set((state) => ({
-        input: { ...state.input, pageCount: Math.min(Math.max(1, count), 50) }
+        input: { ...state.input, pageCount: Math.min(Math.max(1, count), 100) }
     })),
 
     setGeneratedPrompts: (prompts) => set({ generatedPrompts: prompts }),
