@@ -48,7 +48,7 @@ export async function generateLyricPromptAction(
             availableTags = tagsContent.split('\n').map(t => t.trim()).filter(t => t.length > 0);
         } catch (fileError) {
             console.warn('[Lyrics Action] Warning: Could not read sonauto_tags.txt. Using default fallback tags.', fileError);
-            availableTags = ['Pop', 'Rock', 'Indie', 'Alternative', 'Electronic', 'Hip Hop', 'R&B', 'Jazz', 'Classical', 'Folk', 'Country']; 
+            availableTags = ['Pop', 'Rock', 'Indie', 'Alternative', 'Electronic', 'Hip Hop', 'R&B', 'Jazz', 'Classical', 'Folk', 'Country'];
         }
 
         const model = AIManager.getModel(provider, modelName);
@@ -93,12 +93,12 @@ export async function generateLyricPromptAction(
     } catch (error: any) {
         // Log the FULL error object to see the real cause (headers, auth, etc.)
         console.error('[Lyrics Action] FATAL Generation Error:', error);
-        
+
         // Check for common error patterns from providers
         const errorMessage = error?.message || 'Unknown error';
-        
+
         if (errorMessage.includes('401') || errorMessage.includes('unauthorized') || errorMessage.includes('api key')) {
-             return {
+            return {
                 prompt: '',
                 tags: [],
                 error: 'Authentication failed with AI Provider. Please check valid API Key.'
@@ -108,7 +108,7 @@ export async function generateLyricPromptAction(
         return {
             prompt: '',
             tags: [],
-            error: \`Generation Failed: \${errorMessage}\`
+            error: `Generation Failed: ${errorMessage}`
         };
     }
 }
